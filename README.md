@@ -2,7 +2,7 @@
 
 Simple VDO.Ninja-style **push** and **view** over WebRTC.
 
-## Run
+## Run website locally
 
 ```bash
 npm install
@@ -11,12 +11,49 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-1. Click **Push camera** and allow camera/mic.
-2. Copy the **View link** (or open **View stream** with the same room id).
-3. Optional: paste the view URL into OBS as a Browser Source.
+Signaling is hardcoded to the VPS:
+
+`ws://31.220.80.36:8000/ws`
+
+## VPS signaling server
+
+On the VPS, run the signaling binary (or Node script) on port **8000**:
+
+```bash
+# binary
+chmod +x vvapp-signaling-linux
+PORT=8000 ./vvapp-signaling-linux
+
+# or Node
+cd signaling
+npm install
+PORT=8000 node signaling-server.js
+```
+
+Open firewall for TCP **8000**.
+
+### Important (HTTPS website)
+
+If the website is served over **HTTPS** (e.g. Vercel), browsers block insecure `ws://`.
+You must put TLS in front of the VPS and switch the URL in `lib/webrtc.js` to:
+
+`wss://31.220.80.36:8000/ws` (or your domain with SSL)
+
+## Build signaling exe
+
+```bash
+cd signaling
+npm install
+npm run build:exe
+```
+
+Outputs in `dist/`:
+
+- `vvapp-signaling-win.exe`
+- `vvapp-signaling-linux`
 
 ## Stack
 
-- Next.js (React, JavaScript)
-- WebRTC (`getUserMedia` + `RTCPeerConnection`)
-- WebSocket signaling on the same Node server (`server.js`)
+- Next.js website
+- Standalone WebSocket signaling on VPS (`31.220.80.36:8000`)
+- WebRTC in the browser

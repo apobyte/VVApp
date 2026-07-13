@@ -6,7 +6,9 @@
     "dev": "node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
-    "lint": "next lint"
+    "lint": "next lint",
+    "signaling": "npm --prefix signaling start",
+    "signaling:build-exe": "npm --prefix signaling run build:exe"
   },
   "dependencies": {
     "next": "^15.5.0",
