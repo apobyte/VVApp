@@ -1,19 +1,19 @@
 /**
- * VVApp standalone WebSocket signaling server.
- * Run on a VPS (Node or compiled binary). Does not serve the website.
+ * VVApp standalone WebSocket signaling server (backend).
+ *
+ * Port: 8002
+ * Frontend: 8001
  *
  * Usage:
- *   PORT=8000 node signaling-server.js
- *   PORT=8000 ./vvapp-signaling-linux
- *
- * Website connects to: ws://31.220.80.36:8000/ws
+ *   PORT=8002 node signaling-server.js
+ *   vvapp-backend-win.exe
  */
 const http = require("http");
 const { randomUUID } = require("crypto");
 const { WebSocketServer } = require("ws");
 
 const hostname = process.env.HOST || "0.0.0.0";
-const port = Number(process.env.PORT || 8000);
+const port = Number(process.env.PORT || 8002);
 
 /** @type {Map<string, { pushers: Map<string, import('ws').WebSocket>, viewers: Map<string, import('ws').WebSocket> }>} */
 const rooms = new Map();
@@ -191,7 +191,7 @@ wss.on("connection", (ws) => {
 });
 
 server.listen(port, hostname, () => {
-  console.log(`VVApp signaling ready`);
+  console.log(`VVApp backend (signaling) ready`);
   console.log(`  HTTP  http://${hostname}:${port}/`);
   console.log(`  WS    ws://${hostname}:${port}/ws`);
 });

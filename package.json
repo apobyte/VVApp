@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
+    "dev": "next dev -p 8001",
+    "dev:backend": "npm --prefix signaling start",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "npm --prefix frontend start",
     "lint": "next lint",
     "signaling": "npm --prefix signaling start",
-    "signaling:build-exe": "npm --prefix signaling run build:exe"
+    "build:exes": "node scripts/build-exes.js"
   },
   "dependencies": {
     "next": "^15.5.0",

@@ -718,8 +718,8 @@ export default function PushClient({ roomId }) {
 
   const viewUrl =
     typeof window !== "undefined"
-      ? `${window.location.origin}/view/${roomId}`
-      : `/view/${roomId}`;
+      ? `${window.location.origin}/view?room=${encodeURIComponent(roomId)}`
+      : `/view?room=${encodeURIComponent(roomId)}`;
 
   async function copyViewLink() {
     try {

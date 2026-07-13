@@ -12,7 +12,7 @@ export default function HomePage() {
   function go(role) {
     const id = roomId.trim().toLowerCase().replace(/[^a-z0-9-]/g, "");
     if (!id) return;
-    router.push(`/${role}/${id}`);
+    router.push(`/${role}?room=${encodeURIComponent(id)}`);
   }
 
   return (

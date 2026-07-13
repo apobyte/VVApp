@@ -23,6 +23,10 @@
 .DS_Store
 *.pem
 /dist
+/out
+/frontend/site
+/frontend/node_modules
+/signaling/node_modules
 
 # debug
 npm-debug.log*

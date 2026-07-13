@@ -1,59 +1,53 @@
 # VVApp
 
-Simple VDO.Ninja-style **push** and **view** over WebRTC.
+Push / view WebRTC app. On VPS run **both** Windows exes:
 
-## Run website locally
+| Exe | Role | Port |
+|-----|------|------|
+| `vvapp-frontend-win.exe` | Website | **8001** |
+| `vvapp-backend-win.exe` | WebSocket signaling | **8002** |
+
+## Build the Windows exes (on your PC)
 
 ```bash
 npm install
+npm run build:exes
+```
+
+Output in `dist/`:
+
+- `vvapp-frontend-win.exe`
+- `vvapp-backend-win.exe`
+
+## Run on Windows VPS
+
+1. Copy both exe files to the VPS (same folder is fine).
+2. Open firewall TCP **8001** and **8002**.
+3. Start backend first, then frontend:
+
+```bat
+vvapp-backend-win.exe
+vvapp-frontend-win.exe
+```
+
+4. Open `http://YOUR_VPS_IP:8001`
+
+The website connects to `ws://YOUR_VPS_IP:8002/ws` automatically.
+
+## Local development
+
+```bash
+# terminal 1 — backend
+npm run dev:backend
+
+# terminal 2 — frontend
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Then open http://localhost:8001
 
-Signaling is hardcoded to the VPS:
+## Routes
 
-`ws://31.220.80.36:8000/ws`
-
-## VPS signaling server
-
-On the VPS, run the signaling binary (or Node script) on port **8000**:
-
-```bash
-# binary
-chmod +x vvapp-signaling-linux
-PORT=8000 ./vvapp-signaling-linux
-
-# or Node
-cd signaling
-npm install
-PORT=8000 node signaling-server.js
-```
-
-Open firewall for TCP **8000**.
-
-### Important (HTTPS website)
-
-If the website is served over **HTTPS** (e.g. Vercel), browsers block insecure `ws://`.
-You must put TLS in front of the VPS and switch the URL in `lib/webrtc.js` to:
-
-`wss://31.220.80.36:8000/ws` (or your domain with SSL)
-
-## Build signaling exe
-
-```bash
-cd signaling
-npm install
-npm run build:exe
-```
-
-Outputs in `dist/`:
-
-- `vvapp-signaling-win.exe`
-- `vvapp-signaling-linux`
-
-## Stack
-
-- Next.js website
-- Standalone WebSocket signaling on VPS (`31.220.80.36:8000`)
-- WebRTC in the browser
+- Home: `/`
+- Push: `/push?room=myroom`
+- View: `/view?room=myroom`
